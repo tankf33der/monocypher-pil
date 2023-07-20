@@ -14,7 +14,7 @@
          R ) ) )
 (de crypto_blake2b_keyed (M K O)
    (default O 64)
-   (let (Len (length M) Ken (length K))
+   (let (Len (length M)  Ken (length K))
       (use R
          (native
             "libmonocypher.so.4"
@@ -23,7 +23,12 @@
             (cons 'R (cons (cons O 'B O)))
             O
             (cons NIL (cons Ken) K)
-
-(println (crypto_blake2b (mapcar char (chop "abc"))))
+            Ken
+            (cons NIL (cons Len) M)
+            Len )
+         R ) ) )
+(test
+   (crypto_blake2b (mapcar char (chop "abc")))
+   (crypto_blake2b_keyed (mapcar char (chop "abc"))) )
 (msg 'ok)
 (bye)
