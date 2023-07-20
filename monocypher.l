@@ -49,6 +49,7 @@
          PrtPass NIL
          PtrSalt NIL
          R NIL
+         O 64
       )
       (println 'w WorkArea)
       (struct Config NIL (1 . 4) (8 . 4) (3 . 4) (1 . 4))
@@ -68,8 +69,8 @@
          "libmonocypher.so.4"
          "crypto_argon2"
          NIL
-         '(R (64 B . 64))
-         64
+         (cons 'R (cons (cons O 'B O)))
+         O
          WorkArea
          Config
          Inputs
