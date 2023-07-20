@@ -1,1 +1,1 @@
-Monocypher 4.0 PicoLisp bindings.
+Monocypher 4.x PicoLisp bindings.
