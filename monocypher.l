@@ -45,14 +45,14 @@
       (Config (%@ "malloc" 'P 16)
          Inputs (%@ "malloc" 'P 24)
          Extras (%@ "malloc" 'P 24)
-         WorkArea (%@ "malloc" 'P (* 1024 8))
+         WorkArea (%@ "malloc" 'P (* 1024 16))
          PrtPass NIL
          PtrSalt NIL
          R NIL
          O 64
       )
       (println 'w WorkArea)
-      (struct Config NIL (1 . 4) (8 . 4) (3 . 4) (1 . 4))
+      (struct Config NIL -1 -8 -3 -1)
       (println 'c (struct Config '(I I I I)))
 
       (setq
