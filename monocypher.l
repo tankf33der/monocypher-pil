@@ -43,7 +43,7 @@
 (de crypto_argon2 ()
    (let
       (Config (%@ "malloc" 'P 16)
-         Inputs (%@ "malloc" 'P 16)
+         Inputs (%@ "malloc" 'P 24)
          Extras (%@ "malloc" 'P 24)
          WorkArea (%@ "malloc" 'P (* 1024 8))
          PrtPass NIL
