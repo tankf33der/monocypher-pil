@@ -50,6 +50,7 @@
          PtrSalt NIL
          R NIL
       )
+      (println 'w WorkArea)
       (struct Config NIL (1 . 4) (8 . 4) (3 . 4) (1 . 4))
       (println 'c (struct Config '(I I I I)))
 
@@ -57,7 +58,7 @@
          PtrPass (%@ "strdup" 'P "mike")
          PtrSalt (%@ "strdup" 'P "salt") )
       (struct Inputs NIL (cons PtrPass 8) (cons PtrSalt 8) (4 . 4) (4 . 4))
-      (println 'i (struct Inputs '(P P I I)))
+      (println 'i Inputs (struct Inputs '(P P I I)))
 
 
       (struct Extras NIL (0 . 8) (0 . 8) (0 . 4) (0 . 4))
