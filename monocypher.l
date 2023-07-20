@@ -30,5 +30,64 @@
 (test
    (crypto_blake2b (mapcar char (chop "abc")))
    (crypto_blake2b_keyed (mapcar char (chop "abc"))) )
+
+# Argon2
+# - Algorithm   (0 = Argon2d, 1 = Argon2i, 2 -> Argon2id)
+# - Memory      (number of KiB)
+# - Time        (number of iterations)
+# - Parallelism (number of lanes)
+# - Password
+# - Salt
+# - Key
+# - Additional data
+(de crypto_argon2 ()
+   (let
+      (Config (%@ "malloc" 'P 16)
+         Inputs (%@ "malloc" 'P 16)
+         Extras (%@ "malloc" 'P 24)
+         WorkArea (%@ "malloc" 'P (* 1024 8))
+         PrtPass NIL
+         PtrSalt NIL
+         R NIL
+      )
+      (struct Config NIL (1 . 4) (8 . 4) (3 . 4) (1 . 4))
+      (println 'c (struct Config '(I I I I)))
+
+      (setq
+         PtrPass (%@ "strdup" 'P "mike")
+         PtrSalt (%@ "strdup" 'P "salt") )
+      (struct Inputs NIL (cons PtrPass 8) (cons PtrSalt 8) (4 . 4) (4 . 4))
+      (println 'i (struct Inputs '(P P I I)))
+
+
+      (struct Extras NIL (0 . 8) (0 . 8) (0 . 4) (0 . 4))
+      (println 'e (struct Extras '(P P I I)))
+
+      (native
+         "libmonocypher.so.4"
+         "crypto_argon2"
+         NIL
+         '(R (64 B . 64))
+         64
+         WorkArea
+         Config
+         Inputs
+         Extras )
+      (println 'R R)
+
+
+      # clean up
+      (%@ "free" NIL PtrPass)
+      (%@ "free" NIL PtrSalt)
+
+      (%@ "free" NIL Config)
+      (%@ "free" NIL Inputs)
+      (%@ "free" NIL Extras)
+      (%@ "free" NIL WorkArea)
+   )
+
+)
+(crypto_argon2)
+
 (msg 'ok)
 (bye)
