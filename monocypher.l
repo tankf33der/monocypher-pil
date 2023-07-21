@@ -45,7 +45,7 @@
       (Config (%@ "malloc" 'P 16)
          Inputs (%@ "malloc" 'P 24)
          Extras (%@ "malloc" 'P 24)
-         WorkArea (%@ "malloc" 'P (* 1024 16))
+         WorkArea (%@ "malloc" 'P (* 1024 8))
          PrtPass NIL
          PtrSalt NIL
          R NIL
@@ -66,7 +66,7 @@
       (println 'e (struct Extras '(P P I I)))
 
       (native
-         "libmonocypher.so.4"
+         "glue_argon2.so"
          "crypto_argon2"
          NIL
          (cons 'R (cons (cons O 'B O)))
