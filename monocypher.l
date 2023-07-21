@@ -40,7 +40,7 @@
 # - Salt
 # - Key
 # - Additional data
-(de crypto_argon2 (Out Blocks Iters)
+(de crypto_argon2 (Out Blocks Iters Password Salt Key Ad)
    (let
       (Config (%@ "malloc" 'P 16)
          Inputs (%@ "malloc" 'P 24)
@@ -81,12 +81,17 @@
       (println 'c (struct Config '(I I I I)))
 
       (setq
-         PtrPass (%@ "strdup" 'P "a")
-         PtrSalt (%@ "strdup" 'P "a")
+         PtrPass (%@ "strdup" 'P Password)
+         PtrSalt (%@ "strdup" 'P Salt)
          PtrKey  (%@ "strdup" 'P "a")
          PtrAd   (%@ "strdup" 'P "a")
       )
-      (struct Inputs NIL (0 . 8) (0 . 8) (0 . 4) (0 . 4))
+      (struct Inputs NIL
+         (cons PtrPass 8)
+         (cons PtrSalt 8)
+         (cons (length Password) 4)
+         (cons (length Salt) 4 )
+      )
       (println 'i Inputs (struct Inputs '(P P I I)))
 
 
@@ -126,8 +131,10 @@
 )
 (crypto_argon2
    32       # Hash
-   16       # Memory blocks
-   3        # Iterations
+   32       # Memory blocks
+   4        # Iterations
+   "0101"
+   "a"
 )
 
 (msg 'ok)
