@@ -31,16 +31,8 @@
    (crypto_blake2b (mapcar char (chop "abc")))
    (crypto_blake2b_keyed (mapcar char (chop "abc"))) )
 
-# Argon2
-# - Algorithm   (0 = Argon2d, 1 = Argon2i, 2 -> Argon2id)
-# - Memory      (number of KiB)
-# - Time        (number of iterations)
-# - Parallelism (number of lanes)
-# - Password
-# - Salt
-# - Key
-# - Additional data
-(de crypto_argon2 (Out Blocks Iters Password Salt Key Ad)
+# Argon2id
+(de crypto_argon2id (Out Blocks Iters Password Salt Key Ad)
    (let
       (Config (%@ "malloc" 'P 16)
          Inputs (%@ "malloc" 'P 24)
@@ -50,54 +42,27 @@
          PtrSalt NIL
          PtrKey  NIL
          PtrAd   NIL
-         R NIL
-      )
-# - Algorithm   (0 = Argon2d, 1 = Argon2i, 2 -> Argon2id)
-# - Memory      (number of KiB)
-# - Time        (number of iterations)
-# - Parallelism (number of lanes)
-# - Password
-# - Salt
-# - Key
-# - Additional data
-# - Digest
-# 0200000000000000:
-# 2000000000000000:
-# 0300000000000000:
-# 0400000000000000:
-# 0101010101010101010101010101010101010101010101010101010101010101:
-# 02020202020202020202020202020202:
-# 0303030303030303:
-# 040404040404040404040404:
-# 0d640df58d78766c08c037a34a8b53c9d01ef0452d75b65eb52520e96b01e659:
-
-      # XXX 4 . Lanes
+         R NIL )
       (struct Config NIL
          (cons 2  4)
          (cons Blocks 4)
          (cons Iters 4)
-         (1 . 4)
-      )
-      (println 'c (struct Config '(I I I I)))
-
+         (1 . 4) )
       (setq
          PtrPass (%@ "strdup" 'P Password)
          PtrSalt (%@ "strdup" 'P Salt)
-         PtrKey  (%@ "strdup" 'P "a")
-         PtrAd   (%@ "strdup" 'P "a")
-      )
+         PtrKey  (%@ "strdup" 'P Key)
+         PtrAd   (%@ "strdup" 'P Ad) )
       (struct Inputs NIL
          (cons PtrPass 8)
          (cons PtrSalt 8)
          (cons (length Password) 4)
-         (cons (length Salt) 4 )
-      )
-      (println 'i Inputs (struct Inputs '(P P I I)))
-
-
-      (struct Extras NIL (0 . 8) (0 . 8) (0 . 4) (0 . 4))
-      (println 'e (struct Extras '(P P I I)))
-
+         (cons (length Salt) 4 ) )
+      (struct Extras NIL
+         (cons PtrKey 8)
+         (cons PtrAd 8)
+         (cons (length Key) 4)
+         (cons (length Ad) 4) )
       (native
          "./glue_argon2.so"
          "glue_argon2"
@@ -107,35 +72,28 @@
          WorkArea
          Config
          Inputs
-         Extras
-      )
-      (println 'R (length R) R)
-
-
-      # clean up
+         Extras )
+      # clean up all
       (%@ "free" NIL PtrPass)
       (%@ "free" NIL PtrSalt)
       (%@ "free" NIL PtrKey)
       (%@ "free" NIL PtrAd)
-      (msg 0)
       (%@ "free" NIL Config)
-      (msg -1)
       (%@ "free" NIL Inputs)
-      (msg -2)
       (%@ "free" NIL Extras)
-      (msg -3)
       (%@ "free" NIL WorkArea)
-      (msg -4)
-   )
+      R ) )
+(test
+   (138 45 5 70 112 111 225 163 92 26 0 15 167 142 206 154 26 92 126 252 172 226 179 90 71 181 156 245 83 185 62 193)
+   (crypto_argon2id
+      32       # output size
+      32       # Memory blocks
+      4        # Iterations
+      "0101"   # Password
+      "a"      # Salt
+      "b"      # Key
+      "c" ) )  # Ad
 
-)
-(crypto_argon2
-   32       # Hash
-   32       # Memory blocks
-   4        # Iterations
-   "0101"
-   "a"
-)
 
 (msg 'ok)
 (bye)
