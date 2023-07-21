@@ -127,7 +127,7 @@
 (crypto_argon2
    32       # Hash
    2        # Memory blocks
-   3        # Iterations
+   31       # Iterations
 )
 
 (msg 'ok)
