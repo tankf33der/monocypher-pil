@@ -66,8 +66,8 @@
       (println 'e (struct Extras '(P P I I)))
 
       (native
-         "glue_argon2.so"
-         "crypto_argon2"
+         "./glue_argon2.so"
+         "glue_argon2"
          NIL
          (cons 'R (cons (cons O 'B O)))
          O
