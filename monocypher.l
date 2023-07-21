@@ -73,7 +73,6 @@
          Config
          Inputs
          Extras )
-      # clean up all
       (%@ "free" NIL PtrPass)
       (%@ "free" NIL PtrSalt)
       (%@ "free" NIL PtrKey)
@@ -93,7 +92,12 @@
       "a"      # Salt
       "b"      # Key
       "c" ) )  # Ad
-
+(test
+   (226 186 176 25 45 190 242 255 149 89 11 11 167 145 179 222 203 97 252 111 145 44 170 214 236 246 63 231 13 181 39 198)
+   (crypto_argon2id 32 32 4 (pack (mapcar char (97 98 99)))) )
+(test
+   (78 20 242 75 5 251 195 121 22 19 67 159 249 240 174 204 96 168 186 187 217 199 14 87 164 115 183 15 234 229 239 124)
+   (crypto_argon2id 32 100000 1) )
 
 (msg 'ok)
 (bye)
