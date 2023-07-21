@@ -73,7 +73,7 @@
 
       # XXX 4 . Lanes
       (struct Config NIL
-         (2 . 4)
+         (cons 2  4)
          (cons Blocks 4)
          (cons Iters 4)
          (1 . 4)
@@ -126,8 +126,8 @@
 )
 (crypto_argon2
    32       # Hash
-   2        # Memory blocks
-   31       # Iterations
+   16       # Memory blocks
+   3        # Iterations
 )
 
 (msg 'ok)
