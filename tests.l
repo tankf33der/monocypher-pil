@@ -21,7 +21,7 @@
    (%@ "free" NIL CtxKeyed) )
 (println 'OK)
 
-(prin "crypto_argon2id ")
+(prin "argon2id ")
 (test
    (138 45 5 70 112 111 225 163 92 26 0 15 167 142 206 154 26 92 126 252 172 226 179 90 71 181 156 245 83 185 62 193)
    (crypto_argon2id
@@ -39,5 +39,22 @@
    (78 20 242 75 5 251 195 121 22 19 67 159 249 240 174 204 96 168 186 187 217 199 14 87 164 115 183 15 234 229 239 124)
    (crypto_argon2id 32 100000 1) )
 (println 'OK)
+
+(prin "poly1305 ")
+(test
+   (51 53 89 36 247 221 224 227 230 233 236 239 242 245 248 251)
+   (crypto_poly1305 (mapcar char (chop "Lorem")) (range 0 31)) )
+(test
+   (range 16 31)
+   (crypto_poly1305 NIL (range 0 31)) )
+(let Ctx (%@ "malloc" 'P 80)
+   (crypto_poly1305_init Ctx (range 0 31))
+   (crypto_poly1305_update Ctx (mapcar char (chop "Lorem")))
+   (test
+      (51 53 89 36 247 221 224 227 230 233 236 239 242 245 248 251)
+      (crypto_poly1305_final Ctx) )
+   (%@ "free" NIL Ctx) )
+(println 'OK)
+
 
 (bye)

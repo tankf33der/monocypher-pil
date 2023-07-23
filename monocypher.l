@@ -166,33 +166,5 @@
          '(R (16 B . 16)) )
       R ) )
 
-# (let (Ctx (%@ "malloc" 'P 224)  CtxKeyed (%@ "malloc" 'P 224))
-   # (crypto_blake2b_init Ctx 32)
-   # (crypto_blake2b_keyed_init CtxKeyed (mapcar char (chop "key")) 32)
-#
-   # (crypto_blake2b_update Ctx       (97 98 99))
-   # (crypto_blake2b_update CtxKeyed  (97 98 99))
-#
-   # (test
-      # (crypto_blake2b (mapcar char (chop "abc")) 32)
-      # (crypto_blake2b_final Ctx 32) )
-   # (test
-      # (crypto_blake2b_keyed (mapcar char (chop "abc")) (mapcar char (chop "key")) 32)
-      # (crypto_blake2b_final CtxKeyed 32) )
-   # (%@ "free" NIL Ctx)
-   # (%@ "free" NIL CtxKeyed) )
-
-
-
-
-(test
-   (51 53 89 36 247 221 224 227 230 233 236 239 242 245 248 251)1
-   (crypto_poly1305 (mapcar char (chop "Lorem")) (range 0 31)) )
-(test
-   (range 16 31)
-   (crypto_poly1305 NIL (range 0 31)) )
-
-
-
 (msg 'ok)
 (bye)
