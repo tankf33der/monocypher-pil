@@ -207,7 +207,24 @@
          (cons NIL (cons 32) Secret)
          (cons NIL (cons 32) Curve) )
       R ) )
-
+(de crypto_x25519_dirty_small (Key)
+   (use R
+      (native
+         "libmonocypher.so.4"
+         "crypto_x25519_dirty_small"
+         NIL
+         '(R (32 B . 32))
+         (cons NIL (cons 32) Key) )
+      R ) )
+(de crypto_x25519_dirty_fast (Key)
+   (use R
+      (native
+         "libmonocypher.so.4"
+         "crypto_x25519_dirty_fast"
+         NIL
+         '(R (32 B . 32))
+         (cons NIL (cons 32) Key) )
+      R ) )
 (test
    (143 64 197 173 182 143 37 98 74 229 178 20 234 118 122 110 201 77 130 157 61 123 94 26 209 186 111 62 33 56 40 95)
    (crypto_x25519_public_key (range 0 31)) )
@@ -220,7 +237,12 @@
 (test
    (228 52 27 172 165 46 241 190 89 209 169 227 159 10 133 194 119 146 123 20 77 208 59 65 138 158 88 54 16 80 234 8)
    (crypto_x25519_inverse (range 0 31) (range 0 31)) )
-
+(test
+   (143 64 197 173 182 143 37 98 74 229 178 20 234 118 122 110 201 77 130 157 61 123 94 26 209 186 111 62 33 56 40 95)
+   (crypto_x25519_dirty_small (range 0 31)) )
+(test
+   (143 64 197 173 182 143 37 98 74 229 178 20 234 118 122 110 201 77 130 157 61 123 94 26 209 186 111 62 33 56 40 95)
+   (crypto_x25519_dirty_fast (range 0 31)) )
 
 
 (msg 'ok)
