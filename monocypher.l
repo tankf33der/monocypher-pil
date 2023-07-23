@@ -166,5 +166,37 @@
          '(R (16 B . 16)) )
       R ) )
 
+##########
+# x25519 #
+##########
+
+(de crypto_x25519_public_key (SK)
+   (use R
+      (native
+         "libmonocypher.so.4"
+         "crypto_x25519_public_key"
+         NIL
+         '(R (32 B . 32))
+         (cons NIL (cons 32) SK) )
+      R ) )
+(de crypto_x25519 (SK PK)
+   (native
+      "libmonocypher.so.4"
+      "crypto_x25519"
+      NIL
+      '(R (32 B . 32))
+      (cons NIL (cons 32) SK)
+      (cons NIL (cons 32) PK) )
+   R )
+
+(test
+   (143 64 197 173 182 143 37 98 74 229 178 20 234 118 122 110 201 77 130 157 61 123 94 26 209 186 111 62 33 56 40 95)
+   (crypto_x25519_public_key (range 0 31)) )
+(test
+   (249 174 28 120 77 245 117 116 114 207 46 213 203 221 30 131 6 201 34 192 92 80 61 0 191 108 6 181 75 45 147 27)
+   (crypto_x25519 (range 0 31) (range 0 31)) )
+
+
+
 (msg 'ok)
 (bye)
