@@ -5,3 +5,4 @@ Monocypher 4.x PicoLisp bindings.
 - [x] argon2id
 - [x] poly1305
 - [x] x25519
+- [ ] chacha20
