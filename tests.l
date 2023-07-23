@@ -13,10 +13,10 @@
 
    (test
       (crypto_blake2b (mapcar char (chop "abc")) 32)
-      (crypto_blake2b_final Ctx 32) )
+      (crypto_blake2b_final Ctx) )
    (test
       (crypto_blake2b_keyed (mapcar char (chop "abc")) (mapcar char (chop "key")) 32)
-      (crypto_blake2b_final CtxKeyed 32) )
+      (crypto_blake2b_final CtxKeyed) )
    (%@ "free" NIL Ctx)
    (%@ "free" NIL CtxKeyed) )
 (println 'OK)

@@ -59,14 +59,14 @@
          Ctx
          (cons NIL (cons Len) Data)
          Len ) ) )
-(de crypto_blake2b_final (Ctx Out)
-   (use R
+(de crypto_blake2b_final (Ctx)
+   (let (Size (struct (+ Ctx 216) 'I) R)
       (native
          "libmonocypher.so.4"
          "crypto_blake2b_final"
          NIL
          Ctx
-         (cons 'R (cons (cons Out 'B Out))) )
+         (cons 'R (cons (cons Size 'B Size))) )
       R ) )
 
 ############
