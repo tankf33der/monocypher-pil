@@ -303,9 +303,32 @@
          '(Public (32 B . 32))
          (cons NIL (cons 32) Seed) )
       (list Secret Public) ) )
-(println
-   (crypto_eddsa_key_pair (range 0 31)) )
-
+(de crypto_eddsa_sign (Secret Data)
+   (let (Len (length Data)  Signature)
+      (native
+         "libmonocypher.so.4"
+         "crypto_eddsa_sign"
+         NIL
+         '(Signature (64 B . 64))
+         (cons NIL (cons 64) Secret)
+         (cons NIL (cons Len) Data)
+         Len )
+      Signature ) )
+(let
+   (Pair (crypto_eddsa_key_pair (range 0 31))
+      Secret NIL
+      Public NIL
+      Signature NIL )
+   (test
+      '((0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 246 83 51 250 99 3 182 162 61 239 215 222 42 248 170 70 28 176 71 204 191 18 212 237 210 158 243 177 235 166 112 107) (246 83 51 250 99 3 182 162 61 239 215 222 42 248 170 70 28 176 71 204 191 18 212 237 210 158 243 177 235 166 112 107))
+      Pair )
+   (setq
+      Secret (car Pair)
+      Public (cadr Pair)
+      Signature (crypto_eddsa_sign Secret (range 0 31)) )
+   (println Secret)
+   (println Signature)
+)
 
 (msg 'ok)
 (bye)
