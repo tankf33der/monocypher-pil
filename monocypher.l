@@ -289,6 +289,23 @@
             Ctr ) )
       (cons R NextCtr) ) )
 
+#########
+# eddsa #
+#########
+
+(de crypto_eddsa_key_pair (Seed)
+   (use (Secret Public)
+      (native
+         "libmonocypher.so.4"
+         "crypto_eddsa_key_pair"
+         NIL
+         '(Secret (64 B . 64))
+         '(Public (32 B . 32))
+         (cons NIL (cons 32) Seed) )
+      (list Secret Public) ) )
+(println
+   (crypto_eddsa_key_pair (range 0 31)) )
+
 
 (msg 'ok)
 (bye)
