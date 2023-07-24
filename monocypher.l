@@ -305,7 +305,6 @@
       (list Secret Public) ) )
 (de crypto_eddsa_sign (Secret Data)
    (let (Len (length Data)  Signature)
-      (println Len Secret Data)
       (native
          "libmonocypher.so.4"
          "crypto_eddsa_sign"
@@ -327,7 +326,6 @@
       Secret (car Pair)
       Public (cadr Pair)
       Signature (crypto_eddsa_sign Secret (range 0 31)) )
-   (println Secret)
    (println Signature)
 )
 
