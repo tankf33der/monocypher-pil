@@ -363,30 +363,65 @@
             (cons NIL (cons LenCrypto) Crypto)
             LenCrypto ) )
       (list Res Data) ) )
-
-(let
-   (Crypto
-      (crypto_aead_lock
-         (range 0 31)
-         (range 0 23)
+(de crypto_aead_init_x (Ctx Key Nonce)
+   (native
+      "libmonocypher.so.4"
+      "crypto_aead_init_x"
+      NIL
+      Ctx
+      (cons NIL (cons 32) Key)
+      (cons NIL (cons 24) Nonce) ) )
+(de crypto_aead_write (Ctx Ad Data)
+   (let (LenData (length Data)  LenAd (length Ad)  Crypto NIL  Mac NIL)
+      (native
+         "libmonocypher.so.4"
+         "crypto_aead_write"
+         NIL
+         Ctx
+         (cons 'Crypto (cons (cons LenData 'B LenData)))
+         '(Mac (16 B . 16))
+         (cons NIL (cons LenAd) Ad)
+         LenAd
+         (cons NIL (cons LenData) Data)
+         LenData )
+      (list Crypto Mac) ) )
+(de crypto_aead_read (Ctx Mac Ad Crypto)
+   (let
+      (LenCrypto (length Crypto)
+         LenAd (length Ad)
+         Data NIL
+         Res
+         (native
+            "libmonocypher.so.4"
+            "crypto_aead_read"
+            'I
+            Ctx
+            (cons 'Data (cons (cons LenCrypto 'B LenCrypto)))
+            (cons NIL (cons 16) Mac)
+            (cons NIL (cons LenAd) Ad)
+            LenAd
+            (cons NIL (cons LenCrypto) Crypto)
+            LenCrypto ) )
+         (println Res Data)
+   )
+)
+(let (Ctx (%@ "malloc" 'P 48) Crypto NIL  UnCrypto NIL)
+   (crypto_aead_init_x Ctx (range 0 31) (range 0 23))
+   (setq Crypto
+      (crypto_aead_write
+         Ctx
          (mapcar char (chop "a"))
-         (mapcar char (chop "Lorem ipsum")) )
-      UnCrypto
-         (crypto_aead_unlock
-            (cadr Crypto)
-            (range 0 31)
-            (range 0 23)
-            (mapcar char (chop "a"))
-            (car Crypto) ) )
+         (mapcar char (chop "Lorem ipsum")) ) )
    (test
       '((210 173 125 26 253 242 228 222 64 49 75) (209 7 245 48 59 168 253 90 117 253 81 213 126 173 87 240))
       Crypto )
-   (test 0 (car UnCrypto))
-   (test
-      (cadr UnCrypto)
-      (mapcar char (chop "Lorem ipsum")) )
-
+   (crypto_aead_read
+      Ctx
+      (cadr Crypto)
+      (mapcar char (chop "a"))
+      (car Crypto) )
 )
+
 
 (msg 'ok)
 (bye)
