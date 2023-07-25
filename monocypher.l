@@ -402,9 +402,32 @@
             LenAd
             (cons NIL (cons LenCrypto) Crypto)
             LenCrypto ) )
-         (println Res Data)
+         (println Res Data LenCrypto LenAd Mac Ad Crypto)
    )
 )
+
+# (de crypto_aead_unlock (Mac Key Nonce Ad Crypto)
+   # (let
+      # (LenAd (length Ad)
+         # LenCrypto (length Crypto)
+         # Data NIL
+         # Res
+         # (native
+            # "libmonocypher.so.4"
+            # "crypto_aead_unlock"
+            # 'I
+            # (cons 'Data (cons (cons LenCrypto 'B LenCrypto)))
+            # (cons NIL (cons 16) Mac)
+            # (cons NIL (cons 32) Key)
+            # (cons NIL (cons 24) Nonce)
+            # (cons NIL (cons LenAd) Ad)
+            # LenAd
+            # (cons NIL (cons LenCrypto) Crypto)
+            # LenCrypto ) )
+      # (list Res Data) ) )
+
+
+
 (let (Ctx (%@ "malloc" 'P 48) Crypto NIL  UnCrypto NIL)
    (crypto_aead_init_x Ctx (range 0 31) (range 0 23))
    (setq Crypto
@@ -415,6 +438,7 @@
    (test
       '((210 173 125 26 253 242 228 222 64 49 75) (209 7 245 48 59 168 253 90 117 253 81 213 126 173 87 240))
       Crypto )
+   (println Crypto (car Crypto) (cadr Crypto))
    (crypto_aead_read
       Ctx
       (cadr Crypto)
