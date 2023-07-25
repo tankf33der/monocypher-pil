@@ -6,6 +6,6 @@ Monocypher 4.x PicoLisp bindings.
 - [x] poly1305
 - [x] X25519
 - [x] chacha20
-- [ ] eddsa
+- [x] eddsa
 - [ ] aead
 - [ ] elligator2
