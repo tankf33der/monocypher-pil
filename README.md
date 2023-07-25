@@ -9,3 +9,7 @@ Monocypher 4.x PicoLisp bindings.
 - [x] eddsa
 - [x] aead
 - [x] elligator2
+- [ ] sha512
+- [ ] sha512 hmac
+- [ ] sha512 hkdf
+- [ ] ed25519
