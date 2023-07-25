@@ -419,4 +419,41 @@
             LenCrypto ) )
          (list Res Data) ) )
 
+#############
+# Elligator #
+#############
+
+(de crypto_elligator_rev (Curve Tweak)
+   (let
+      (Hidden NIL
+         Res
+         (native
+            "libmonocypher.so.4"
+            "crypto_elligator_rev"
+            'I
+            '(Hidden (32 B . 32))
+            (cons NIL (cons 32) Curve)
+            Tweak ) )
+      (list Res Hidden) ) )
+(de crypto_elligator_map (Hidden)
+   (use Curve
+      (native
+         "libmonocypher.so.4"
+         "crypto_elligator_map"
+         NIL
+         '(Curve (32 B . 32))
+         (cons NIL (cons 32) Hidden) )
+      Curve ) )
+(de crypto_elligator_key_pair (Seed)
+   (use (Hidden Secret)
+      (native
+         "libmonocypher.so.4"
+         "crypto_elligator_key_pair"
+         NIL
+         '(Hidden (32 B . 32))
+         '(Secret (32 B . 32))
+         (cons NIL (cons 32) Seed) )
+      (list Hidden Secret) ) )
+
+(msg 'ok)
 (bye)

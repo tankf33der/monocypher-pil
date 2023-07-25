@@ -6,5 +6,6 @@
 (load "test-chacha20.l")
 (load "test-eddsa.l")
 (load "test-aead.l")
+(load "test-elligator.l")
 
 (bye)
