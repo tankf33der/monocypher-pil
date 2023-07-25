@@ -8,4 +8,4 @@ Monocypher 4.x PicoLisp bindings.
 - [x] chacha20
 - [x] eddsa
 - [x] aead
-- [ ] elligator2
+- [x] elligator2
