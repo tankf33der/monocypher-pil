@@ -1,4 +1,3 @@
-
 ###########
 # BLAKE2b #
 ###########
@@ -379,6 +378,14 @@
       Ctx
       (cons NIL (cons 32) Key)
       (cons NIL (cons 8) Nonce) ) )
+(de crypto_aead_init_ietf (Ctx Key Nonce)
+   (native
+      "libmonocypher.so.4"
+      "crypto_aead_init_ietf"
+      NIL
+      Ctx
+      (cons NIL (cons 32) Key)
+      (cons NIL (cons 12) Nonce) ) )
 (de crypto_aead_write (Ctx Ad Data)
    (let (LenData (length Data)  LenAd (length Ad)  Crypto NIL  Mac NIL)
       (native
@@ -412,5 +419,4 @@
             LenCrypto ) )
          (list Res Data) ) )
 
-(msg 'ok)
 # (bye)

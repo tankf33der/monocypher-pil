@@ -21,7 +21,6 @@
    (test
       (cadr UnCrypto)
       (mapcar char (chop "Lorem ipsum")) ) )
-
 (let
    (Ctx (%@ "malloc" 'P 48)
       Ctx2 (%@ "malloc" 'P 48)
@@ -46,9 +45,7 @@
    (test 0 (car UnCrypto))
    (test (mapcar char (chop "Lorem ipsum")) (cadr UnCrypto))
    (%@ "free" NIL Ctx)
-   (%@ "free" NIL Ctx2)
-)
-
+   (%@ "free" NIL Ctx2) )
 (let
    (Ctx (%@ "malloc" 'P 48)
       Ctx2 (%@ "malloc" 'P 48)
@@ -73,9 +70,30 @@
    (test 0 (car UnCrypto))
    (test (mapcar char (chop "Lorem ipsum")) (cadr UnCrypto))
    (%@ "free" NIL Ctx)
-   (%@ "free" NIL Ctx2)
-)
-
-
+   (%@ "free" NIL Ctx2) )
+(let
+   (Ctx (%@ "malloc" 'P 48)
+      Ctx2 (%@ "malloc" 'P 48)
+      Crypto NIL
+      UnCrypto NIL )
+   (crypto_aead_init_ietf Ctx (range 0 31) (range 0 11))
+   (crypto_aead_init_ietf Ctx2 (range 0 31) (range 0 11))
+   (setq Crypto
+      (crypto_aead_write
+         Ctx
+         (mapcar char (chop "a"))
+         (mapcar char (chop "Lorem ipsum")) ) )
+   (test
+      '((197 148 122 101 68 55 204 48 196 246 82) (132 198 58 85 111 97 208 183 22 91 98 253 249 41 163 82))
+      Crypto )
+   (setq UnCrypto
+      (crypto_aead_read
+         Ctx2
+         (cadr Crypto)
+         (mapcar char (chop "a"))
+         (car Crypto) ) )
+   (test 0 (car UnCrypto))
+   (test (mapcar char (chop "Lorem ipsum")) (cadr UnCrypto))
+   (%@ "free" NIL Ctx)
+   (%@ "free" NIL Ctx2) )
 (println 'OK)
-(bye)
