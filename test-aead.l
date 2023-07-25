@@ -1,3 +1,4 @@
+(load "monocypher.l")
 (prin "aead ")
 (let
    (Crypto
@@ -43,7 +44,38 @@
          (mapcar char (chop "a"))
          (car Crypto) ) )
    (test 0 (car UnCrypto))
-   (test (mapcar char (chop "Lorem ipsum")) (cadr UnCrypto)) )
+   (test (mapcar char (chop "Lorem ipsum")) (cadr UnCrypto))
+   (%@ "free" NIL Ctx)
+   (%@ "free" NIL Ctx2)
+)
+
+(let
+   (Ctx (%@ "malloc" 'P 48)
+      Ctx2 (%@ "malloc" 'P 48)
+      Crypto NIL
+      UnCrypto NIL )
+   (crypto_aead_init_djb Ctx (range 0 31) (range 0 7))
+   (crypto_aead_init_djb Ctx2 (range 0 31) (range 0 7))
+   (setq Crypto
+      (crypto_aead_write
+         Ctx
+         (mapcar char (chop "a"))
+         (mapcar char (chop "Lorem ipsum")) ) )
+   (test
+      '((116 111 249 255 75 156 92 228 109 81 41) (73 182 51 114 175 186 243 252 206 216 236 252 86 3 53 13))
+      Crypto )
+   (setq UnCrypto
+      (crypto_aead_read
+         Ctx2
+         (cadr Crypto)
+         (mapcar char (chop "a"))
+         (car Crypto) ) )
+   (test 0 (car UnCrypto))
+   (test (mapcar char (chop "Lorem ipsum")) (cadr UnCrypto))
+   (%@ "free" NIL Ctx)
+   (%@ "free" NIL Ctx2)
+)
 
 
 (println 'OK)
+(bye)
