@@ -10,7 +10,7 @@
             "libmonocypher.so.4"
             "crypto_blake2b"
             NIL
-            (cons 'R (cons (cons Out 'B Out)))
+            (list 'R (cons Out 'B Out))
             Out
             (cons NIL (cons Len) Data)
             Len )
@@ -23,7 +23,7 @@
             "libmonocypher.so.4"
             "crypto_blake2b_keyed"
             NIL
-            (cons 'R (cons (cons Out 'B Out)))
+            (list 'R (cons Out 'B Out))
             Out
             (cons NIL (cons Ken) Key)
             Ken
@@ -107,7 +107,7 @@
          "./glue_argon2.so"
          "glue_argon2"
          NIL
-         (cons 'R (cons (cons Out 'B Out)))
+         (list 'R (cons Out 'B Out))
          Out
          WorkArea
          Config
@@ -248,7 +248,7 @@
             "libmonocypher.so.4"
             "crypto_chacha20_djb"
             'N
-            (cons 'R (cons (cons Len 'B Len)))
+            (list 'R (cons Len 'B Len))
             (cons NIL (cons Len) Data)
             Len
             (cons NIL (cons 32) Key)
@@ -264,7 +264,7 @@
             "libmonocypher.so.4"
             "crypto_chacha20_ietf"
             'I
-            (cons 'R (cons (cons Len 'B Len)))
+            (list 'R (cons Len 'B Len))
             (cons NIL (cons Len) Data)
             Len
             (cons NIL (cons 32) Key)
@@ -280,7 +280,7 @@
             "libmonocypher.so.4"
             "crypto_chacha20_x"
             'I
-            (cons 'R (cons (cons Len 'B Len)))
+            (list 'R (cons Len 'B Len))
             (cons NIL (cons Len) Data)
             Len
             (cons NIL (cons 32) Key)
@@ -334,7 +334,7 @@
          "libmonocypher.so.4"
          "crypto_aead_lock"
          NIL
-         (cons 'Crypto (cons (cons LenData 'B LenData)))
+         (list 'Crypto (cons LenData 'B LenData))
          '(Mac (16 B . 16))
          (cons NIL (cons 32) Key)
          (cons NIL (cons 24) Nonce)
@@ -353,7 +353,7 @@
             "libmonocypher.so.4"
             "crypto_aead_unlock"
             'I
-            (cons 'Data (cons (cons LenCrypto 'B LenCrypto)))
+            (list 'Data (cons LenCrypto 'B LenCrypto))
             (cons NIL (cons 16) Mac)
             (cons NIL (cons 32) Key)
             (cons NIL (cons 24) Nonce)
@@ -393,7 +393,7 @@
          "crypto_aead_write"
          NIL
          Ctx
-         (cons 'Crypto (cons (cons LenData 'B LenData)))
+         (list 'Crypto (cons LenData 'B LenData))
          '(Mac (16 B . 16))
          (cons NIL (cons LenAd) Ad)
          LenAd
@@ -411,7 +411,7 @@
             "crypto_aead_read"
             'I
             Ctx
-            (cons 'Data (cons (cons LenCrypto 'B LenCrypto)))
+            (list 'Data (cons LenCrypto 'B LenCrypto))
             (cons NIL (cons 16) Mac)
             (cons NIL (cons LenAd) Ad)
             LenAd
@@ -456,4 +456,4 @@
       (list Hidden Secret) ) )
 
 (msg 'ok)
-(bye)
+#(bye)
