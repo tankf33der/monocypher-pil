@@ -12,4 +12,4 @@ Monocypher 4.x PicoLisp bindings.
 - [x] sha512
 - [x] sha512 hmac
 - [ ] sha512 hkdf
-- [ ] ed25519
+- [x] ed25519

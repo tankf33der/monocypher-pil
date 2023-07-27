@@ -538,6 +538,38 @@
          '(Res (64 B . 64)) )
       Res ) )
 
+###########
+# ed25519 #
+###########
 
-# (msg 'ok)
-# (bye)
+(de crypto_ed25519_key_pair (Seed)
+   (use (Secret Public)
+      (native
+         "libmonocypher.so.4"
+         "crypto_ed25519_key_pair"
+         NIL
+         '(Secret (64 B . 64))
+         '(Public (32 B . 32))
+         (cons NIL (cons 32) Seed) )
+      (list Secret Public) ) )
+(de crypto_ed25519_sign (Secret Data)
+   (let (Len (length Data)  Signature)
+      (native
+         "libmonocypher.so.4"
+         "crypto_ed25519_sign"
+         NIL
+         '(Signature (64 B . 64))
+         (cons NIL (cons 64) Secret)
+         (cons NIL (cons Len) Data)
+         Len )
+      Signature ) )
+(de crypto_ed25519_check (Signature Pubkey Data)
+   (let Len (length Data)
+      (native
+         "libmonocypher.so.4"
+         "crypto_ed25519_check"
+         'I
+         (cons NIL (cons 64) Signature)
+         (cons NIL (cons 32) Pubkey)
+         (cons NIL (cons Len) Data)
+         Len ) ) )
