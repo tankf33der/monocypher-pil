@@ -8,5 +8,6 @@
 (load "test-aead.l")
 (load "test-elligator.l")
 (load "test-sha512.l")
+(load "test-sha512-hmac.l")
 
 (bye)

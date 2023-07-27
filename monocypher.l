@@ -494,7 +494,50 @@
          '(Res (64 B . 64)) )
       Res ) )
 
+###############
+# sha512 hmac #
+###############
+
+(de crypto_sha512_hmac (Key Data)
+   (let (LenKey (length Key)  LenData (length Data)  Res)
+      (native
+         "libmonocypher.so.4"
+         "crypto_sha512_hmac"
+         NIL
+         '(Res (64 B . 64))
+         (cons NIL (cons LenKey) Key)
+         LenKey
+         (cons NIL (cons LenData) Data)
+         LenData )
+      Res ) )
+(de crypto_sha512_hmac_init (Ctx Key)
+   (let LenKey (length Key)
+      (native
+         "libmonocypher.so.4"
+         "crypto_sha512_hmac_init"
+         NIL
+         Ctx
+         (cons NIL (cons LenKey) Key)
+         LenKey) ) )
+(de crypto_sha512_hmac_update (Ctx Data)
+   (let LenData (length Data)
+      (native
+         "libmonocypher.so.4"
+         "crypto_sha512_hmac_update"
+         NIL
+         Ctx
+         (cons NIL (cons LenData) Data)
+         LenData ) ) )
+(de crypto_sha512_hmac_final (Ctx)
+   (use Res
+      (native
+         "libmonocypher.so.4"
+         "crypto_sha512_hmac_final"
+         NIL
+         Ctx
+         '(Res (64 B . 64)) )
+      Res ) )
 
 
-(msg 'ok)
-(bye)
+# (msg 'ok)
+# (bye)
