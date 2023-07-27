@@ -1,5 +1,5 @@
 ###########
-# BLAKE2b #
+# blake2b #
 ###########
 
 (de crypto_blake2b (Data Out)
@@ -69,7 +69,7 @@
       R ) )
 
 ############
-# Argon2id #
+# argon2id #
 ############
 
 (de crypto_argon2id (Out Blocks Iters Password Salt Key Ad)
@@ -124,7 +124,7 @@
       R ) )
 
 ############
-# Poly1305 #
+# poly1305 #
 ############
 
 (de crypto_poly1305 (Data Key)
@@ -420,7 +420,7 @@
          (list Res Data) ) )
 
 #############
-# Elligator #
+# elligator #
 #############
 
 (de crypto_elligator_rev (Curve Tweak)
@@ -455,5 +455,46 @@
          (cons NIL (cons 32) Seed) )
       (list Hidden Secret) ) )
 
+##########
+# sha512 #
+##########
+
+(de sha512 (Data)
+   (let (LenData (length Data)  Res)
+      (native
+         "libmonocypher.so.4"
+         "crypto_sha512"
+         NIL
+         '(Res (64 B . 64))
+         (cons NIL (cons LenData) Data)
+         LenData )
+      Res ) )
+(de crypto_sha512_init (Ctx)
+   (native
+      "libmonocypher.so.4"
+      "crypto_sha512_init"
+      NIL
+      Ctx ) )
+(de crypto_sha512_update (Ctx Data)
+   (let LenData (length Data)
+      (native
+         "libmonocypher.so.4"
+         "crypto_sha512_update"
+         NIL
+         Ctx
+         (cons NIL (cons LenData) Data)
+         LenData ) ) )
+(de crypto_sha512_final (Ctx)
+   (use Res
+      (native
+         "libmonocypher.so.4"
+         "crypto_sha512_final"
+         NIL
+         Ctx
+         '(Res (64 B . 64)) )
+      Res ) )
+
+
+
 (msg 'ok)
-#(bye)
+(bye)
