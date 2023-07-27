@@ -419,9 +419,9 @@
             LenCrypto ) )
          (list Res Data) ) )
 
-#############
-# elligator #
-#############
+##############
+# elligator2 #
+##############
 
 (de crypto_elligator_rev (Curve Tweak)
    (let
