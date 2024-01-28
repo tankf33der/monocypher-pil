@@ -10,4 +10,6 @@
 (load "test-sha512.l")
 (load "test-sha512-hmac.l")
 (load "test-ed25519.l")
+
+(msg 'all-ok)
 (bye)
